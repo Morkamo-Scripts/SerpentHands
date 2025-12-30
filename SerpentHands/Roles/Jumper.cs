@@ -11,6 +11,7 @@ using SerpentHands.Components;
 using SerpentHands.Events;
 using SerpentHands.Extensions;
 using SerpentHands.Features.Components;
+using UnityEngine;
 using events = Exiled.Events.Handlers;
 
 namespace SerpentHands.Roles
@@ -41,7 +42,9 @@ namespace SerpentHands.Roles
             {
                 if (!Check(ev.Player))
                     return;
-        
+            
+                Round.IgnoredPlayers.Add(ev.Player.ReferenceHub);
+                
                 ev.Player.SerpentHandsProperties().SerpentProps.SerpentRole = SerpentRole.Jumper;
         
                 ev.Player.MaxHumeShield = 25;
@@ -60,7 +63,13 @@ namespace SerpentHands.Roles
                 RueDisplay.Get(ev.Player).Show(
                     new Tag(),
                     new BasicElement(200, Description), 5);
+                
+                RueDisplay.Get(ev.Player).Show(
+                    new Tag(),
+                    new BasicElement(900, "<size=45><b><color=#34ebd2>Длань Змея и SCP являются союзными\nклассами и не могут наносить\nдруг другу урон!</color></b></size>"), 10);
 
+                ev.Player.Rotation = new Quaternion(0, 0.7f, 0, 0.7f);
+                
                 Timing.CallDelayed(5.1f, () => RueDisplay.Get(ev.Player).Update());
             });
         }

@@ -19,16 +19,16 @@ namespace SerpentHands
         private static Harmony _harmony;
         
         private GeneralSettings _generalSettings;
-        private RoundHandler _roundHandler;
+        public RoundHandler RoundHandler;
 
         public override void OnEnabled()
         {
             Instance = this;
             _harmony = new Harmony("ru.morkamo.serpentHands.patches");
             _generalSettings = Config.GeneralSettings;
-            _roundHandler = new RoundHandler();
+            RoundHandler = new RoundHandler();
             
-            MorkamoEventsRegistrator.Plugin.AddRegistrator(_roundHandler);
+            MorkamoEventsRegistrator.Plugin.AddRegistrator(RoundHandler);
             
             Config.SquadRoles.Leader.Register();
             Config.SquadRoles.Eagle.Register();
@@ -59,9 +59,9 @@ namespace SerpentHands
             Config.SquadRoles.Jumper.Unregister();
             Config.SquadRoles.Support.Unregister();
             
-            MorkamoEventsRegistrator.Plugin.RemoveRegistrator(_roundHandler);
+            MorkamoEventsRegistrator.Plugin.RemoveRegistrator(RoundHandler);
             
-            _roundHandler = null;
+            RoundHandler = null;
             _generalSettings = null;
             _harmony = null;
             Instance = null;
