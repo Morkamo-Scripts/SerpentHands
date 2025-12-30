@@ -1,6 +1,9 @@
 ﻿using System;
 using Exiled.API.Features;
+using Exiled.CustomItems.API;
+using Exiled.CustomRoles.API;
 using HarmonyLib;
+using SerpentHands.Handlers;
 
 namespace SerpentHands
 {
@@ -14,16 +17,52 @@ namespace SerpentHands
 
         public static Plugin Instance { get; private set; }
         private static Harmony _harmony;
+        
+        private GeneralSettings _generalSettings;
+        private RoundHandler _roundHandler;
 
         public override void OnEnabled()
         {
             Instance = this;
             _harmony = new Harmony("ru.morkamo.serpentHands.patches");
+            _generalSettings = Config.GeneralSettings;
+            _roundHandler = new RoundHandler();
+            
+            MorkamoEventsRegistrator.Plugin.AddRegistrator(_roundHandler);
+            
+            Config.SquadRoles.Leader.Register();
+            Config.SquadRoles.Eagle.Register();
+            Config.SquadRoles.Initiator.Register();
+            Config.SquadRoles.Jumper.Register();
+            Config.SquadRoles.Support.Register();
+            
+            Config.SquadKeycards.KeycardLeader.Register();
+            Config.SquadKeycards.KeycardEagle.Register();
+            Config.SquadKeycards.KeycardInitiator.Register();
+            Config.SquadKeycards.KeycardJumper.Register();
+            Config.SquadKeycards.KeycardSupport.Register();
+            
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
+            Config.SquadKeycards.KeycardLeader.Unregister();
+            Config.SquadKeycards.KeycardEagle.Unregister();
+            Config.SquadKeycards.KeycardInitiator.Unregister();
+            Config.SquadKeycards.KeycardJumper.Unregister();
+            Config.SquadKeycards.KeycardSupport.Unregister();
+            
+            Config.SquadRoles.Leader.Unregister();
+            Config.SquadRoles.Eagle.Unregister();
+            Config.SquadRoles.Initiator.Unregister();
+            Config.SquadRoles.Jumper.Unregister();
+            Config.SquadRoles.Support.Unregister();
+            
+            MorkamoEventsRegistrator.Plugin.RemoveRegistrator(_roundHandler);
+            
+            _roundHandler = null;
+            _generalSettings = null;
             _harmony = null;
             Instance = null;
             base.OnDisabled();

@@ -12,6 +12,7 @@
         <AssemblyName>SerpentHands</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>x64</PlatformTarget>
@@ -39,6 +40,10 @@
         </Reference>
         <Reference Include="AdvancedCassie">
             <HintPath>..\..\Libs\AdvancedCassie.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="AdvancedCommands">
+          <HintPath>..\..\Libs\AdvancedCommands.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -135,9 +140,34 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Components\SerpentHandsProperties.cs" />
+        <Compile Include="Components\SerpentHandsRole.cs" />
         <Compile Include="Config.cs" />
+        <Compile Include="Events\Components\ICancelableEvent.cs" />
+        <Compile Include="Events\EventArgs\Player\PlayerFullConnectedEventArgs.cs" />
+        <Compile Include="Events\EventArgs\Player\SerpentHandsUnitSpawned.cs" />
+        <Compile Include="Events\EventArgs\Round\SerpentsHandRespawnedEventArgs.cs" />
+        <Compile Include="Events\EventManager.cs" />
+        <Compile Include="Events\PlayerEvents.cs" />
+        <Compile Include="Events\RoundEvents.cs" />
+        <Compile Include="Extensions\PlayerExtensions.cs" />
+        <Compile Include="Features\Components\Interfaces\IPlayerPropertyModule.cs" />
+        <Compile Include="Features\Components\SerpentProps.cs" />
+        <Compile Include="Features\Components\SerpentRole.cs" />
+        <Compile Include="Handlers\RoundHandler.cs" />
+        <Compile Include="Items\KeycardEagle.cs" />
+        <Compile Include="Items\KeycardInitiator.cs" />
+        <Compile Include="Items\KeycardJumper.cs" />
+        <Compile Include="Items\KeycardLeader.cs" />
+        <Compile Include="Items\KeycardSupport.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Roles\Eagle.cs" />
+        <Compile Include="Roles\Initiator.cs" />
+        <Compile Include="Roles\Jumper.cs" />
+        <Compile Include="Roles\Leader.cs" />
+        <Compile Include="GeneralSettings.cs" />
+        <Compile Include="Roles\Support.cs" />
     </ItemGroup>
     <!--<ItemGroup>
       <None Include="App.config" />
