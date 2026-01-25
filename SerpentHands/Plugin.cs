@@ -12,13 +12,14 @@ namespace SerpentHands
         public override string Name => nameof(SerpentHands);
         public override string Prefix => Name;
         public override string Author => "Morkamo";
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 1, 0);
         public override Version RequiredExiledVersion => new Version(9, 12, 1);
 
         public static Plugin Instance { get; private set; }
         private static Harmony _harmony;
         
         private GeneralSettings _generalSettings;
+        /*private VoiceChatHandler _voiceChatHandler;*/
         public RoundHandler RoundHandler;
 
         public override void OnEnabled()
@@ -27,8 +28,10 @@ namespace SerpentHands
             _harmony = new Harmony("ru.morkamo.serpentHands.patches");
             _generalSettings = Config.GeneralSettings;
             RoundHandler = new RoundHandler();
+            /*_voiceChatHandler = new VoiceChatHandler();*/
             
             MorkamoEventsRegistrator.Plugin.AddRegistrator(RoundHandler);
+            /*MorkamoEventsRegistrator.Plugin.AddRegistrator(_voiceChatHandler);*/
             
             Config.SquadRoles.Leader.Register();
             Config.SquadRoles.Eagle.Register();
@@ -59,6 +62,7 @@ namespace SerpentHands
             Config.SquadRoles.Jumper.Unregister();
             Config.SquadRoles.Support.Unregister();
             
+            /*MorkamoEventsRegistrator.Plugin.RemoveRegistrator(_voiceChatHandler);*/
             MorkamoEventsRegistrator.Plugin.RemoveRegistrator(RoundHandler);
             
             RoundHandler = null;

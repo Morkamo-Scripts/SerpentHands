@@ -4,6 +4,7 @@ using System.Linq;
 using AdvancedCommands.Commands.JoinWave;
 using AdvancedCommands.Components.Extensions;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Roles;
 using Exiled.CustomItems.API.Features;
@@ -50,6 +51,7 @@ public class RoundHandler : IEventsRegistrator
         events.Scp106.Attacking += On106Attack;
         events.Scp0492.TriggeringBloodlust += On0492TriggerBloodlust;
         events.Scp939.ValidatingVisibility += On939ValidatingVisibility;
+        events.Player.ReceivingEffect += OnReceivingEffect;
         levents.Scp096Events.AddingTarget += On096AddTarget;
         levents.Scp173Events.AddingObserver += On173AddObserver;
         levents.Scp049Events.UsingSense += On049UsingSense;
@@ -66,6 +68,7 @@ public class RoundHandler : IEventsRegistrator
         events.Scp106.Attacking -= On106Attack;
         events.Scp0492.TriggeringBloodlust -= On0492TriggerBloodlust;
         events.Scp939.ValidatingVisibility -= On939ValidatingVisibility;
+        events.Player.ReceivingEffect -= OnReceivingEffect;
         levents.Scp096Events.AddingTarget -= On096AddTarget;
         levents.Scp173Events.AddingObserver -= On173AddObserver;
         levents.Scp049Events.UsingSense -= On049UsingSense;
@@ -96,12 +99,16 @@ public class RoundHandler : IEventsRegistrator
     }
 
     private void DelayedTeleport(int i, Player player) 
-        => Timing.CallDelayed(1f, () => { player.Teleport(Plugin.Instance.RoundHandler.SpawnPoints[i - 1]); });
+        => Timing.CallDelayed(1f, () => { player.Teleport(Plugin.Instance.RoundHandler.SpawnPoints[i]); });
     
     private void OnRespawningTeam(RespawningTeamEventArgs ev)
     {
         if (ev.Wave.Team != Team.ChaosInsurgency)
             return;
+        
+        /*// FOR CLASSIC SERVER
+        if (!AdvancedCommands.Commands.SerpentHandsWave.SerpentHandsWaveHandler.IsNextWaveForSerpentHands)
+            return;*/
 
         var players = Player.List
             .Where(pl => pl.Role.Type == RoleTypeId.Spectator)
@@ -115,7 +122,7 @@ public class RoundHandler : IEventsRegistrator
         if (players.Count > gs.MaxPlayers)
             players = players.Take(gs.MaxPlayers).ToList();
         
-        if (SpawnCount == gs.SpawnLimit/* || Random.Range(1, 101) > gs.SpawnChance*/)
+        if (SpawnCount == gs.SpawnLimit || Random.Range(1, 101) > gs.SpawnChance)
             return;
 
         AdvancedCommands.Plugin.Instance.IsWaveBlockedAnotherTeam = true;
@@ -152,6 +159,8 @@ public class RoundHandler : IEventsRegistrator
         {
             AdvancedCommands.Plugin.Instance.IsWaveBlockedAnotherTeam = false;
         });
+
+        AdvancedCommands.Commands.SerpentHandsWave.SerpentHandsWaveHandler.IsNextWaveForSerpentHands = false;
         
         EventManager.RoundEvents.InvokeSerpentsHandRespawned(players);
     }
@@ -173,6 +182,15 @@ public class RoundHandler : IEventsRegistrator
     {
         if (Player.Get(ev.Target).SerpentHandsProperties().SerpentProps.SerpentRole != null)
             ev.IsAllowed = false;
+    }
+
+    private void OnReceivingEffect(ReceivingEffectEventArgs ev)
+    {
+        if (ev.Player.SerpentHandsProperties().SerpentProps.SerpentRole != null)
+        {
+            if (ev.Effect.GetEffectType() == EffectType.CardiacArrest && ev.Intensity != 0)
+                ev.IsAllowed = false;
+        }
     }
     
     private void On173AddObserver(Scp173AddingObserverEventArgs ev)

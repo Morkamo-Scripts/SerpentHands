@@ -28,21 +28,19 @@ namespace SerpentHands.Roles
 
         protected override void SubscribeEvents()
         {
-            events.Player.Jumping += Ju;
             events.Player.Spawned += OnPlayerSpawned;
             base.SubscribeEvents();
         }
 
         protected override void UnsubscribeEvents()
         {
-            events.Player.Jumping -= Ju;
             events.Player.Spawned -= OnPlayerSpawned;
             base.UnsubscribeEvents();
         }
 
         private void OnPlayerSpawned(SpawnedEventArgs ev)
         {
-            Timing.CallDelayed(0.5f, () =>
+            Timing.CallDelayed(1f, () =>
             {
                 if (!Check(ev.Player))
                     return;
@@ -66,15 +64,16 @@ namespace SerpentHands.Roles
                 
                 RueDisplay.Get(ev.Player).Show(
                     new Tag(),
-                    new BasicElement(200, Description), 5);
+                    new BasicElement(200, Description), 10f);
                 
                 RueDisplay.Get(ev.Player).Show(
                     new Tag(),
-                    new BasicElement(900, "<size=45><b><color=#34ebd2>Длань Змея и SCP являются союзными\nклассами и не могут наносить\nдруг другу урон!</color></b></size>"), 10);
+                    new BasicElement(900, "<size=45><b><color=#34ebd2>Длань Змея и SCP являются союзными\nклассами и не могут наносить\nдруг другу урон!</color></b></size>"), 15);
 
                 ev.Player.Rotation = new Quaternion(0, 0.7f, 0, 0.7f);
                 
-                Timing.CallDelayed(5.1f, () => RueDisplay.Get(ev.Player).Update());
+                Timing.CallDelayed(10.1f, () => RueDisplay.Get(ev.Player).Update());
+                Timing.CallDelayed(15.1f, () => RueDisplay.Get(ev.Player).Update());
             });
         }
 
@@ -82,11 +81,6 @@ namespace SerpentHands.Roles
         {
             base.RoleRemoved(player);
             player?.SerpentHandsProperties()?.SerpentProps.SerpentRole = null;
-        }
-
-        private void Ju(JumpingEventArgs ev)
-        {
-            Log.Info($"Ju: {ev.Player.Rotation}");
         }
     }
 }

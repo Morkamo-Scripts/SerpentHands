@@ -155,6 +155,7 @@
         <Compile Include="Features\Components\SerpentProps.cs" />
         <Compile Include="Features\Components\SerpentRole.cs" />
         <Compile Include="Handlers\RoundHandler.cs" />
+        <Compile Include="Handlers\VoiceChatHandler.cs" />
         <Compile Include="Items\KeycardEagle.cs" />
         <Compile Include="Items\KeycardInitiator.cs" />
         <Compile Include="Items\KeycardJumper.cs" />

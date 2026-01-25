@@ -23,7 +23,7 @@ namespace SerpentHands.Roles
         public override uint Id { get; set; } = 2;
         public override int MaxHealth { get; set; } = 100;
         public override string Name { get; set; } = "Орёл отряда 'Длань Змея'";
-        public override string Description { get; set; } = "<size=40><color=#34ebd2>Теперь вы <b></color>\n<color=#FA396F>Орёл отряда</color></b>.\n<b><color=#FF6691>Вы правая рука лидера.\nСледуйте за ним или докажите, что\n вы ничем не хуже.</color></b></size>";
+        public override string Description { get; set; } = "<size=40><color=#34ebd2>Теперь вы <b></color>\n<color=#FA396F>Орёл отряда</color></b>.\n<b><color=#FF6691>Вы правая рука лидера.</color>\n<color=#C70000><s>В вашем арсенале есть SCP-2158!</s></color></b></size>";
         public override SerpentRole SerpentRole { get; set; } = SerpentRole.Eagle;
 
         protected override void SubscribeEvents()
@@ -40,7 +40,7 @@ namespace SerpentHands.Roles
 
         private void OnPlayerSpawned(SpawnedEventArgs ev)
         {
-            Timing.CallDelayed(0.5f, () =>
+            Timing.CallDelayed(1f, () =>
             {
                 if (!Check(ev.Player))
                     return;
@@ -53,8 +53,8 @@ namespace SerpentHands.Roles
                 ev.Player.HumeShield = 50;
 
                 ev.Player.AddItem(ItemType.GunE11SR);
-                ev.Player.AddItem(ItemType.GunRevolver);
-                /*CustomItem.TryGive(player, 1); SCP-2158*/
+                /*ev.Player.AddItem(ItemType.GunRevolver);*/
+                CustomItem.TryGive(ev.Player, 8); // SCP-2158
                 CustomItem.TryGive(ev.Player, 4); // SHEagleKeycard
                 ev.Player.AddItem(ItemType.SCP500);
                 ev.Player.AddItem(ItemType.Radio);
@@ -64,15 +64,16 @@ namespace SerpentHands.Roles
                 
                 RueDisplay.Get(ev.Player).Show(
                     new Tag(),
-                    new BasicElement(250, Description), 5);
+                    new BasicElement(250, Description), 10);
 
                 RueDisplay.Get(ev.Player).Show(
                     new Tag(),
-                    new BasicElement(900, "<size=45><b><color=#34ebd2>Длань Змея и SCP являются союзными\nклассами и не могут наносить\nдруг другу урон!</color></b></size>"), 10);
+                    new BasicElement(900, "<size=45><b><color=#34ebd2>Длань Змея и SCP являются союзными\nклассами и не могут наносить\nдруг другу урон!</color></b></size>"), 15);
                 
                 ev.Player.Rotation = new Quaternion(0, 0.7f, 0, 0.7f);
                 
-                Timing.CallDelayed(5.1f, () => RueDisplay.Get(ev.Player).Update());
+                Timing.CallDelayed(10.1f, () => RueDisplay.Get(ev.Player).Update());
+                Timing.CallDelayed(15.1f, () => RueDisplay.Get(ev.Player).Update());
             });
         }
         
