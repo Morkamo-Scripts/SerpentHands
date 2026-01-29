@@ -13,6 +13,7 @@ using SerpentHands.Components;
 using SerpentHands.Events;
 using SerpentHands.Extensions;
 using SerpentHands.Features.Components;
+using SerpentHands.Handlers;
 using UnityEngine;
 using events = Exiled.Events.Handlers;
 
@@ -54,7 +55,10 @@ namespace SerpentHands.Roles
 
                 ev.Player.AddItem(ItemType.GunE11SR);
                 /*ev.Player.AddItem(ItemType.GunRevolver);*/
-                CustomItem.TryGive(ev.Player, 8); // SCP-2158
+
+                if (RoundHandler.SpawnCount == 1)
+                    CustomItem.TryGive(ev.Player, 8); // SCP-2158
+                else ev.Player.AddItem(ItemType.GunRevolver);
                 CustomItem.TryGive(ev.Player, 4); // SHEagleKeycard
                 ev.Player.AddItem(ItemType.SCP500);
                 ev.Player.AddItem(ItemType.Radio);
