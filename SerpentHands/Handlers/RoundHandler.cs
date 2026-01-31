@@ -177,13 +177,13 @@ public class RoundHandler : IEventsRegistrator
             serpentProps.SerpentRole = null;
         }
     }
-
+    
     private void On096AddTarget(Scp096AddingTargetEventArgs ev)
     {
         if (Player.Get(ev.Target).SerpentHandsProperties().SerpentProps.SerpentRole != null)
             ev.IsAllowed = false;
     }
-
+    
     private void OnReceivingEffect(ReceivingEffectEventArgs ev)
     {
         if (ev.Player.SerpentHandsProperties().SerpentProps.SerpentRole != null)

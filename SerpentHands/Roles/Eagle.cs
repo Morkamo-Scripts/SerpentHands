@@ -56,9 +56,10 @@ namespace SerpentHands.Roles
                 ev.Player.AddItem(ItemType.GunE11SR);
                 /*ev.Player.AddItem(ItemType.GunRevolver);*/
 
-                if (RoundHandler.SpawnCount == 1)
+                /*if (RoundHandler.SpawnCount == 1)
                     CustomItem.TryGive(ev.Player, 8); // SCP-2158
-                else ev.Player.AddItem(ItemType.GunRevolver);
+                else ev.Player.AddItem(ItemType.GunRevolver);*/
+                ev.Player.AddItem(ItemType.GunRevolver);
                 CustomItem.TryGive(ev.Player, 4); // SHEagleKeycard
                 ev.Player.AddItem(ItemType.SCP500);
                 ev.Player.AddItem(ItemType.Radio);
